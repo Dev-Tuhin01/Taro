@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import authRouter from "./routes/auth.route";
-import petRoutes from "./routes/pet.routes";
-import choreRoute from "./routes/chore.route";
+import authRouter from "./routes/auth.route.ts";
+import petRoutes from "./routes/pet.routes.ts";
+import choreRoute from "./routes/chore.route.ts";
 
 
 const app = express();
