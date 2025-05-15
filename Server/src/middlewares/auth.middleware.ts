@@ -1,16 +1,21 @@
-import {request, response, NextFunction, Response, Request} from "express";
+import { NextFunction, Response, Request} from "express";
 import Jwt from "jsonwebtoken";
-import User from "../models/user.model";
-import { userInfo } from "os";
+import User, { userDocument } from "../models/user.model.ts";
 
-export const authMiddleWare = (req:Request, res:Response, next: NextFunction) => {
+interface authReq extends Request {
+  user?: userDocument;
+}
+
+export const authMiddleWare = async (req:authReq, res:Response, next: NextFunction) => {
   try {
     const token = req.header("authorization")?.replace("bearer", "");
     if(!token) throw new Error("No token found");
 
     const decoded = Jwt.verify(token,process.env.JWT_SECRET as string) as { userId: string};
-    const user = User.findById(decoded.userId).select("-password");
+    const user = await User.findById(decoded.userId).select("-password");
     if(!user) throw new Error("No user found");
+    req.user = user;
+    next();
   } catch (error) {
     console.log(error as String);
     res.status(401).json({
