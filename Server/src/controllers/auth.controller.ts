@@ -6,8 +6,17 @@ import { generateJWTToken } from "../utils/jwt.ts";
 export const register = async (req:Request, res:Response) => {
   try {
     const { userName, password, role, parentCode } = req.body;
-    const hashedPassword = await bcrypt.hash(password,10);
 
+    const existingUser = await User.findOne({userName});
+
+    if(existingUser) {
+      res.status(409).json({
+        error: "User Already exist"
+      });
+      return ;
+    }
+
+    const hashedPassword = await bcrypt.hash(password,10);
     let parentId = null;
 
     if ( role === "child" && parentCode ) {
@@ -28,7 +37,7 @@ export const register = async (req:Request, res:Response) => {
       password:hashedPassword,
       role,
       parentId
-    })
+    });
 
     await user.save();
 
@@ -39,12 +48,13 @@ export const register = async (req:Request, res:Response) => {
         ...user.toObject(),
         password:undefined
       },
+      token
     });
 
   } catch (error: unknown) {
     res.status(400).json({
       error:(error as Error).message
-    })
+    });
   }
 }
 
@@ -70,11 +80,17 @@ export const login = async (req:Request, res:Response) => {
 
     const token = generateJWTToken( user._id as string);
 
-    res.status
+    res.status(200).json({
+      user:{
+        ...user.toObject(),
+        password:undefined
+      },
+      token
+    });
 
   } catch (error:unknown) {
     res.status(400).json({
       error:(error as Error).message
-    })
+    });
   }
 }

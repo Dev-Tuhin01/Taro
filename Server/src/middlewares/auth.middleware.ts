@@ -2,8 +2,8 @@ import { NextFunction, Response, Request} from "express";
 import Jwt from "jsonwebtoken";
 import User, { userDocument } from "../models/user.model.ts";
 
-interface authReq extends Request {
-  user?: userDocument;
+export interface authReq extends Request {
+  user?: any;
 }
 
 export const authMiddleWare = async (req:authReq, res:Response, next: NextFunction) => {
@@ -19,7 +19,8 @@ export const authMiddleWare = async (req:authReq, res:Response, next: NextFuncti
   } catch (error) {
     console.log(error as String);
     res.status(401).json({
-      message: "Please Authenticate"
+      message: "Please Authenticate",
+      error:(error as Error).message
     })
   }
 }

@@ -49,5 +49,5 @@ const choreSchema = new mongoose.Schema<choreDocument>({
   },
 });
 
-const choreModel = mongoose.model<choreDocument>("chore", choreSchema);
-export default choreModel;
+const Chore = mongoose.model<choreDocument>("chore", choreSchema);
+export default Chore;
