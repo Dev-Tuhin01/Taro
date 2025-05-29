@@ -41,10 +41,10 @@ const choreSchema = new mongoose.Schema<choreDocument>({
     enum: ["pending", "completed", "approved", "rejected"],
     default: "pending"
   },
-  completedAt: Date,
-  approvedAt: Date,
+  completedAt: Number,
+  approvedAt: Number,
   createdAt: {
-    type:Date,
+    type:Number,
     default:Date.now
   },
 });
