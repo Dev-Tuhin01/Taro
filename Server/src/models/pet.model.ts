@@ -1,6 +1,6 @@
 import mongoose, {Document} from "mongoose";
 
-export interface petDocument extends mongoose.Document {
+export interface PetDocument extends mongoose.Document {
   ownerId?: mongoose.Types.ObjectId;
   name: string;
   type: "dog" | "cat" | "penguin" | "ox";
@@ -12,7 +12,7 @@ export interface petDocument extends mongoose.Document {
   mood: number;
   livingConditions: number;
   filth: number;
-  state: string;
+  state: "normal"| "malnourished" | "obese"| "exhausted"| "dirty";
   lastFed: number;  
   lastExercised: number;  
   lastCleaned : number;  
@@ -20,7 +20,7 @@ export interface petDocument extends mongoose.Document {
   createdAt: number;  
 };
 
-const petSchema = new mongoose.Schema<petDocument>({
+const petSchema = new mongoose.Schema<PetDocument>({
   ownerId: {
     type:mongoose.Types.ObjectId,
     ref: "user",
@@ -75,26 +75,26 @@ const petSchema = new mongoose.Schema<petDocument>({
   },
   lastFed: {
     type: Number,
-    default: Date.now
+    default: Date.now()
   },
   lastExercised: {
     type: Number,
-    default: Date.now
+    default: Date.now()
   }, 
   lastCleaned: {
     type: Number,
-    default: Date.now
+    default: Date.now()
   },
   lastUpdated: {
     type: Number,
-    default: Date.now
+    default: Date.now()
   },
   createdAt: {
     type: Number,
-    default: Date.now
+    default: Date.now()
   }
 });
 
-const Pet = mongoose.model<petDocument>("pet",petSchema);
+const Pet = mongoose.model<PetDocument>("pet",petSchema);
 
 export default Pet;

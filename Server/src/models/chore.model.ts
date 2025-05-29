@@ -7,9 +7,9 @@ export interface choreDocument extends mongoose.Document {
   description: string;
   bounty: number;
   status: "pending" | "completed" | "approved" | "rejected";
-  completedAt: Date;
-  approvedAt: Date;
-  createdAt: Date;
+  completedAt: number;
+  approvedAt: number;
+  createdAt: number;
 };
 
 const choreSchema = new mongoose.Schema<choreDocument>({
@@ -45,7 +45,7 @@ const choreSchema = new mongoose.Schema<choreDocument>({
   approvedAt: Number,
   createdAt: {
     type:Number,
-    default:Date.now
+    default:Date.now()
   },
 });
 

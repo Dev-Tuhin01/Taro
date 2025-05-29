@@ -1,12 +1,12 @@
-import { NextFunction, Response, Request} from "express";
+import express from "express";
 import Jwt from "jsonwebtoken";
-import User, { userDocument } from "../models/user.model.ts";
+import User from "../models/user.model.ts";
 
-export interface authReq extends Request {
+export interface AuthReq extends express.Request {
   user?: any;
 }
 
-export const authMiddleWare = async (req:authReq, res:Response, next: NextFunction) => {
+export const authMiddleWare = async (req:AuthReq, res:express.Response, next: express.NextFunction) => {
   try {
     const token = req.header("authorization")?.replace("bearer", "");
     if(!token) throw new Error("No token found");

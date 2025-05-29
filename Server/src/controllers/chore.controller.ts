@@ -1,8 +1,7 @@
-import { Request, Response } from "express"
-import User from "../models/user.model";
-import { authReq } from "../middlewares/auth.middleware.ts";
+import express from "express"
+import User from "../models/user.model.ts";
+import type {AuthReq} from "../middlewares/auth.middleware.ts"
 import Chore from "../models/chore.model.ts"
-import app from "../app";
 import mongoose from "mongoose";
 
 interface queryInterface extends mongoose.Document {
@@ -10,7 +9,7 @@ interface queryInterface extends mongoose.Document {
   childId ?: mongoose.Types.ObjectId
 }
 
-export const postChores = async (req:authReq, res:Response) =>{
+export const postChores = async (req:AuthReq, res:express.Response) =>{
   try {
 
     if(req.user?.role !== "parent"){
@@ -34,11 +33,13 @@ export const postChores = async (req:authReq, res:Response) =>{
     
     const chore = new Chore({
       parentId:req.user?._id,
-      childId:child._id,
+      childId:child!._id,
       title,
       description,
       bounty
     });
+
+
 
     await chore.save();
 
@@ -53,7 +54,7 @@ export const postChores = async (req:authReq, res:Response) =>{
   }
 }
 
-export const getChorelist = async (req:authReq, res:Response) =>{
+export const getChorelist = async (req:AuthReq, res:express.Response) =>{
   try {
 
     const userId = req.user._id;
@@ -81,7 +82,7 @@ export const getChorelist = async (req:authReq, res:Response) =>{
   }
 }
 
-export const choreComplete = async (req:authReq, res: Response) => {
+export const choreComplete = async (req:AuthReq, res: express.Response) => {
   try {
     const chore = await Chore.findOne({
       _id: req.params.choreId,
@@ -92,6 +93,8 @@ export const choreComplete = async (req:authReq, res: Response) => {
       res.status(404).json({
         error: "Chore not found"
       });
+
+      return ;
     }
 
     if (chore.status !== "pending") {
@@ -103,7 +106,7 @@ export const choreComplete = async (req:authReq, res: Response) => {
     chore.status = "completed";
     chore.completedAt = Date.now();
 
-    await chore.save();
+    await chore!.save();
     res.status(200).json(chore);
   } catch (error) {
     res.status(400).json({
@@ -112,7 +115,7 @@ export const choreComplete = async (req:authReq, res: Response) => {
   }
 }
 
-export const choreApprove = async (req:authReq, res:Response) => {
+export const choreApprove = async (req:AuthReq, res:express.Response) => {
   try {
     if(req.user?.role !== "parent" ) {
       res.status(403).json({
@@ -129,6 +132,8 @@ export const choreApprove = async (req:authReq, res:Response) => {
       res.status(400).json({
         error: "No Chore found"
       });
+
+      return ;
     }
 
     if( chore.status !== "completed"){
@@ -137,11 +142,18 @@ export const choreApprove = async (req:authReq, res:Response) => {
       });
     }
 
-    chore.status = "Approved";
-    chore.approvedAt = Date.now();
+    chore.status = "approved";
+    const now = Date.now();
+    chore.approvedAt = now;
 
     const child = await User.findById(chore.childId);
-    child.taroDollars += chore.bounty;
+    if(!child){
+      res.status(404).json({
+        error:"could not find child assigned with this chore"
+      }) ;
+      return ;
+    }
+    child.taroDollar += chore.bounty;
     await child.save();
 
     await chore.save();

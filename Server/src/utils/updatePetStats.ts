@@ -1,7 +1,7 @@
 import path from "path";
-import { petDocument } from "../models/pet.model.ts"
+import { PetDocument } from "../models/pet.model.ts"
 
-const updatePetStat = (pet:petDocument):void => {
+const updatePetStat = (pet:PetDocument):void => {
   const now = Date.now();
   const hoursSinceLastUpdate = (now - pet.lastUpdated) / (1000 * 60 * 60);
 

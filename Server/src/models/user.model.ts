@@ -1,14 +1,15 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface userDocument extends mongoose.Document {
+export interface UserDocument extends mongoose.Document {
   userName: string;
   password: string;
   role: "parent" | "child";
   parentId ?: mongoose.Types.ObjectId;
   taroDollar: number;
+  food: number;
 }
 
-const userSchema = new Schema<userDocument>({
+const userSchema = new Schema<UserDocument>({
   userName: {
     type:String,
     required:true,
@@ -30,9 +31,13 @@ const userSchema = new Schema<userDocument>({
   taroDollar: {
     type:Number,
     default:0
+  },
+  food :{
+    type: Number,
+    default: 0
   }
 });
 
-const userModel = mongoose.model<userDocument>('user', userSchema);
+const User = mongoose.model<UserDocument>('user', userSchema);
 
-export default userModel;
+export default User;
