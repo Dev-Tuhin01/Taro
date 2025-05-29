@@ -1,5 +1,5 @@
 import path from "path";
-import { PetDocument } from "../models/pet.model.ts"
+import type { PetDocument } from "../models/pet.model.ts"
 
 const updatePetStat = (pet:PetDocument):void => {
   const now = Date.now();

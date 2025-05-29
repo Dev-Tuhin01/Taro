@@ -48,7 +48,7 @@ export const postChores = async (req:AuthReq, res:express.Response) =>{
     );
 
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error:(error as Error).message
     })   
   }
@@ -56,7 +56,12 @@ export const postChores = async (req:AuthReq, res:express.Response) =>{
 
 export const getChorelist = async (req:AuthReq, res:express.Response) =>{
   try {
-
+    if(!req.user){
+      res.status(400).json({
+        error: " Authentication Error"
+      });
+      return ;
+    }
     const userId = req.user._id;
     const userRole = req.user.role;
 
@@ -76,7 +81,7 @@ export const getChorelist = async (req:AuthReq, res:express.Response) =>{
       chores
     );
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: (error as Error).message
     });
   }
@@ -84,6 +89,12 @@ export const getChorelist = async (req:AuthReq, res:express.Response) =>{
 
 export const choreComplete = async (req:AuthReq, res: express.Response) => {
   try {
+    if(!req.user){
+      res.status(400).json({
+        error: " Authentication Error"
+      });
+      return ;
+    }
     const chore = await Chore.findOne({
       _id: req.params.choreId,
       childId: req.user._id
@@ -109,7 +120,7 @@ export const choreComplete = async (req:AuthReq, res: express.Response) => {
     await chore!.save();
     res.status(200).json(chore);
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: (error as Error).message
     });
   }
@@ -117,7 +128,14 @@ export const choreComplete = async (req:AuthReq, res: express.Response) => {
 
 export const choreApprove = async (req:AuthReq, res:express.Response) => {
   try {
-    if(req.user?.role !== "parent" ) {
+    if(!req.user){
+      res.status(400).json({
+        error: " Authentication Error"
+      });
+      return ;
+    }
+
+    if(req.user.role !== "parent" ) {
       res.status(403).json({
         error: "Only parents can approve Chore"
       });
@@ -125,7 +143,7 @@ export const choreApprove = async (req:AuthReq, res:express.Response) => {
 
     const chore = await Chore.findOne({
       _id: req.params.choreId,
-      parentId: req.user?._id
+      parentId: req.user._id
     });
 
     if(!chore) {
@@ -161,7 +179,7 @@ export const choreApprove = async (req:AuthReq, res:express.Response) => {
     res.status(200).json(chore);
 
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: (error as Error).message
     })
   }

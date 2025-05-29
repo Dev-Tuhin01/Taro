@@ -1,9 +1,9 @@
 import express from "express";
 import Jwt from "jsonwebtoken";
-import User from "../models/user.model.ts";
+import User,  {type UserDocument } from "../models/user.model.ts";
 
 export interface AuthReq extends express.Request {
-  user?: any;
+  user?: UserDocument;
 }
 
 export const authMiddleWare = async (req:AuthReq, res:express.Response, next: express.NextFunction) => {
