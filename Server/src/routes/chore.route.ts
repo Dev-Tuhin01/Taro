@@ -6,7 +6,7 @@ const choreRoute = express.Router();
 
 choreRoute.post("/",authMiddleWare , postChores);
 choreRoute.get("/",authMiddleWare,getChorelist);
-choreRoute.patch("/:choreId/complete",choreComplete);
-choreRoute.patch("/:choreId/approve",choreApprove);
+choreRoute.patch("/:choreId/complete",authMiddleWare,choreComplete);
+choreRoute.patch("/:choreId/approve",authMiddleWare,choreApprove);
 
 export default choreRoute;

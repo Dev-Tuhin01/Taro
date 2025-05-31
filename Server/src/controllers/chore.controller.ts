@@ -1,7 +1,7 @@
 import express from "express"
 import User from "../models/user.model.ts";
 import type {AuthReq} from "../middlewares/auth.middleware.ts"
-import Chore from "../models/chore.model.ts"
+import Chore, { type choreDocument } from "../models/chore.model.ts"
 import mongoose from "mongoose";
 
 interface queryInterface extends mongoose.Document {
@@ -65,18 +65,17 @@ export const getChorelist = async (req:AuthReq, res:express.Response) =>{
     const userId = req.user._id;
     const userRole = req.user.role;
 
-    let chores;
+    let chores:choreDocument[] = [];
 
     if(userRole === "parent"){
-      chores = await Chore.find({ parentId: userId}).populate("parentId").populate("childId");
+      chores = await Chore.find({ parentId: userId}).populate("parentId","userName").populate("childId","userName");
     } else if (userRole === "child") {
-      chores = await Chore.find({ parentId: userId}).populate("parentId").populate("childId");
+      chores = await Chore.find({ childId: userId}).populate("parentId","userName").populate("childId","userName");
     } else {
       res.status(403).json({
         error:"Role is not defined"
       });
     }
-    
     res.status(200).json(
       chores
     );
@@ -92,6 +91,13 @@ export const choreComplete = async (req:AuthReq, res: express.Response) => {
     if(!req.user){
       res.status(400).json({
         error: " Authentication Error"
+      });
+      return ;
+    }
+
+    if (req.user.role !== "child") {
+      res.status(403).json({
+        error:" Only children can complete chores"
       });
       return ;
     }

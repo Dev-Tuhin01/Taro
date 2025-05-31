@@ -19,7 +19,7 @@ export const getChildren = async (req:AuthReq, res:express.Response) => {
       return ;
     }
 
-    const children = await User.find({parentId: req.user._id , role:"child"});
+    const children = await User.find({parentId: req.user._id , role:"child"}).select("-password");
 
     res.status(200).json(children);
 

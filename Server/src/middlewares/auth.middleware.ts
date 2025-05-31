@@ -8,10 +8,12 @@ export interface AuthReq extends express.Request {
 
 export const authMiddleWare = async (req:AuthReq, res:express.Response, next: express.NextFunction) => {
   try {
-    const token = req.header("authorization")?.replace("bearer", "");
+    const token = req.header("Authorization")?.replace("bearer ", "");
+    console.log(token);
     if(!token) throw new Error("No token found");
 
     const decoded = Jwt.verify(token,process.env.JWT_SECRET as string) as { userId: string};
+
     const user = await User.findById(decoded.userId).select("-password");
     if(!user) throw new Error("No user found");
     req.user = user;
