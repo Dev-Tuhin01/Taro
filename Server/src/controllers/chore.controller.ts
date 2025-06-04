@@ -3,6 +3,7 @@ import User from "../models/user.model.ts";
 import type {AuthReq} from "../middlewares/auth.middleware.ts"
 import Chore, { type choreDocument } from "../models/chore.model.ts"
 import mongoose from "mongoose";
+import { error } from "console";
 
 interface queryInterface extends mongoose.Document {
   parentId ?: mongoose.Types.ObjectId;
@@ -79,6 +80,33 @@ export const getChorelist = async (req:AuthReq, res:express.Response) =>{
     res.status(200).json(
       chores
     );
+  } catch (error) {
+    res.status(500).json({
+      error: (error as Error).message
+    });
+  }
+}
+
+export const getChore = async (req:AuthReq, res: express.Response) => {
+  try {
+    if(!req.user){
+      res.status(400).json({
+        error: " Authentication Error"
+      });
+      return ;
+    }
+
+    const id = req.params.choreId;
+    const chore = await Chore.findOne( { _id: id }).populate("parentId","userName").populate("childId","userName");
+
+    if (!chore) {
+      res.status(404).json({
+        error: "Could not find a chore with this id"
+      });
+      return ;
+    }
+
+    res.status(200).json(chore);
   } catch (error) {
     res.status(500).json({
       error: (error as Error).message
