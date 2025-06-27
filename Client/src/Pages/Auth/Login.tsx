@@ -3,13 +3,13 @@ import { useState, type FormEvent } from "react";
 const Login = () => {
 
   const [data,setData] = useState({
-    name:"",
+    userName:"",
     password:""
   })
 
   const onReset =() =>{
     setData({
-      name: "",
+      userName: "",
       password:""
     });
   }
@@ -23,7 +23,7 @@ const Login = () => {
     <form onSubmit={onSubmit} className="w-full h-full px-4 py-6 flex flex-col justify-self-center">
       <div className="w-full min-h-10 flex items-center">
         <label htmlFor="name" className="md:text-8xl text-4xl text-Accent-Secondary mr-2">Name:</label>
-        <input type="text" placeholder="Enter Your Name" value={data.name} onChange={(e)=>setData({...data,name:e.target.value})}
+        <input type="text" placeholder="Enter Your Name" value={data.userName} onChange={(e)=>setData({...data,userName:e.target.value})}
          className="border border-Accent-Secondary min-h-full w-full text-Text-Ligth text-xl md:text-6xl"/>
       </div>
       <div className="w-full min-h-10 flex items-center">
