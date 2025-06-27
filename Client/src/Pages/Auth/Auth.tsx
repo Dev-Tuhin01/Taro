@@ -1,6 +1,23 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const Auth = () => {
+  useEffect(()=>{
+    const healthCheck = async () =>{
+     try {
+      const response = await axios({
+      method:"get",
+      url:"http://localhost:5000/"
+  });
+    console.log(response.data.message);
+     } catch (error) {
+      console.error(error)
+     }
+    }
+
+    healthCheck();
+  });
   return (
     <div className="h-full bg-UI-1 flex justify-center items-center">
       <div className="text-6xl text-UI-10 text-center">
