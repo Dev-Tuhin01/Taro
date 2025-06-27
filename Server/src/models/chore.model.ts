@@ -1,53 +1,57 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, type Document } from "mongoose";
 
-export interface choreDocument extends mongoose.Document {
-  parentId?: mongoose.Types.ObjectId;
-  childId?: mongoose.Types.ObjectId;
+export interface ChoreDocument extends Document {
+  parentId: mongoose.Types.ObjectId;
+  childId: mongoose.Types.ObjectId;
   title: string;
-  description: string;
+  description?: string;
   bounty: number;
   status: "pending" | "completed" | "approved" | "rejected";
-  completedAt: number;
-  approvedAt: number;
-  createdAt: number;
-};
+  completedAt?: Date;
+  approvedAt?: Date;
+  createdAt: Date;
+}
 
-const choreSchema = new mongoose.Schema<choreDocument>({
+const choreSchema = new Schema<ChoreDocument>({
   parentId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-    required: true
+    required: true,
   },
   childId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   bounty: {
     type: Number,
     min: 10,
     max: 100,
-    required: true
+    required: true,
   },
   status: {
     type: String,
     enum: ["pending", "completed", "approved", "rejected"],
-    default: "pending"
+    default: "pending",
   },
-  completedAt: Number,
-  approvedAt: Number,
+  completedAt: {
+    type: Date,
+  },
+  approvedAt: {
+    type: Date,
+  },
   createdAt: {
-    type:Number,
-    default:Date.now()
+    type: Date,
+    default: Date.now,
   },
 });
 
-const Chore = mongoose.model<choreDocument>("chore", choreSchema);
+const Chore = mongoose.model<ChoreDocument>("chore", choreSchema);
 export default Chore;
