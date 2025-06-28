@@ -11,6 +11,7 @@ import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import AUthRedirect from "../Components/AuthRedirect";
 import ProtectedRoute from "../Components/ProtectedRoute";
+import ChoreDetails from "../Components/ChoreDetails";
 
 const router = createBrowserRouter([
   { path: "/auth",
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
     path: "/child",
     element:(
       <ProtectedRoute requiredRole="child" >
-        <Child />,
+        <Child />
       </ProtectedRoute>
     ),
     children: [
@@ -60,7 +61,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Children /> },
       { path: "children", element: <Children /> },
-      { path: "todo", element: <Todo /> },
+      { path: "chore", element: <Todo /> },
+      { path: "chore/:id", element: <ChoreDetails /> },
     ],
   },
   { path: "*", element: <NotFound /> },

@@ -1,5 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../Stores/AuthStore";
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -7,19 +8,16 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config)=>{
-  const authStorage = localStorage.getItem("auth-storage");
-  if (authStorage) {
+  const authToken = useAuthStore.getState().token;
     try {
-      const {state} = JSON.parse(authStorage);
-      const token = state?.token;
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (authToken) {
+        config.headers.Authorization = `Bearer ${authToken}`;
       }
+
     } catch (error) {
       console.error("Error parsing auth storage: ", error);
       toast.error("Error parsing auth storage: ");
     }
-  }
   return config;
 });
 

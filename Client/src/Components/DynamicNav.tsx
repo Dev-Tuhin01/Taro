@@ -7,7 +7,7 @@ type NavItem = {
 
 const DynamicNav = ({ navItemList }: { navItemList: NavItem[] }) => {
   return (
-    <div className="flex justify-evenly bg-Accent-Primary text-4xl min-h-12">
+    <div className="flex justify-evenly bg-Accent-Primary text-4xl min-h-12 max-h-full">
       {navItemList.map((navItem, index) => (
         <NavLink
           key={index}

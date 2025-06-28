@@ -8,8 +8,8 @@ const Child = () =>{
       link: "children",
       title: "Children"
     }, {
-      link:"todo",
-      title: "Todo"
+      link:"chore",
+      title: "Chores"
     }
   ]
 

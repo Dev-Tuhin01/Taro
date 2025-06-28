@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import toast from "react-hot-toast";
 import { NavLink, Outlet } from "react-router-dom";
 
 const AuthForm = () => {

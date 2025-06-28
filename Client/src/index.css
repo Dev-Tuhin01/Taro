@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
 @import "tailwindcss";
+@import "tailwind-scrollbar-hide";
 
 @theme {
   --font-SingleDay: "Single Day", cursive;
@@ -25,3 +26,4 @@
   --color-Text-Dark: #22223B;
 
 }
+

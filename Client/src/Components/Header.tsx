@@ -9,7 +9,7 @@ const Header = () => {
         Taro <PawPrint /> 
       </div>
       {isAuthenticated && user && <div className="grow justify-end items-center text-Text-Ligth flex gap-7 ">
-        <div className="text-xl flex gap-1 items-end border-r border-r-BG-Primary pr-2">
+        <div className="text-xl md:flex hidden gap-1 items-end border-r border-r-BG-Primary pr-2">
           <span>{user.userName}</span>
           <span className="text-xs opacity-85">{user.role}</span>
         </div>

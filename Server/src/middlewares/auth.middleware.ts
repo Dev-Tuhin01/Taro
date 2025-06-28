@@ -8,7 +8,7 @@ export interface AuthReq extends express.Request {
 
 export const authMiddleWare = async (req:AuthReq, res:express.Response, next: express.NextFunction) => {
   try {
-    const token = req.header("Authorization")?.replace("bearer ", "");
+    const token = req.header("Authorization")?.replace("Bearer ", "");
     console.log(token);
     if(!token) throw new Error("No token found");
 

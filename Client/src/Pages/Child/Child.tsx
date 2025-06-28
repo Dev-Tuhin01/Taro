@@ -8,14 +8,14 @@ const Child = () =>{
       link: "game",
       title: "Game"
     }, {
-      link:"todo",
-      title: "Todo"
+      link:"chore",
+      title: "Chores"
     }
   ]
 
   return (
     <div className="flex flex-col h-screen">
-      <div className=" grow">
+      <div className="maxh-11/12">
         <Outlet />
       </div>
       <DynamicNav navItemList={navItems} />

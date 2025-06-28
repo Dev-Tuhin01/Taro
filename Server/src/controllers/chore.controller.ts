@@ -1,7 +1,7 @@
 import express from "express"
 import User from "../models/user.model.ts";
 import type {AuthReq} from "../middlewares/auth.middleware.ts"
-import Chore, { type choreDocument } from "../models/chore.model.ts"
+import Chore, { type ChoreDocument } from "../models/chore.model.ts"
 import mongoose from "mongoose";
 import { error } from "console";
 
@@ -66,7 +66,7 @@ export const getChorelist = async (req:AuthReq, res:express.Response) =>{
     const userId = req.user._id;
     const userRole = req.user.role;
 
-    let chores:choreDocument[] = [];
+    let chores:ChoreDocument[] = [];
 
     if(userRole === "parent"){
       chores = await Chore.find({ parentId: userId}).populate("parentId","userName").populate("childId","userName");
@@ -149,7 +149,7 @@ export const choreComplete = async (req:AuthReq, res: express.Response) => {
     }
 
     chore.status = "completed";
-    chore.completedAt = Date.now();
+    chore.completedAt = new Date();
 
     await chore!.save();
     res.status(200).json(chore);
@@ -195,7 +195,7 @@ export const choreApprove = async (req:AuthReq, res:express.Response) => {
     }
 
     chore.status = "approved";
-    const now = Date.now();
+    const now = new Date();
     chore.approvedAt = now;
 
     const child = await User.findById(chore.childId);
