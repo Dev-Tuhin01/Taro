@@ -16,3 +16,10 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.child:nth-child(odd){
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+}
+.child:nth-child(even){
+  clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
+}
