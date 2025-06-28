@@ -15,7 +15,7 @@ const Child = () =>{
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="maxh-11/12">
+      <div className="h-full">
         <Outlet />
       </div>
       <DynamicNav navItemList={navItems} />

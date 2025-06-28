@@ -48,7 +48,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Game /> },
       { path: "game", element: <Game /> },
-      { path: "todo", element: <Todo /> },
+      { path: "chore", element: <Todo /> },
+      { path: "chore/:id", element: <ChoreDetails /> },
     ],
   },
   {
