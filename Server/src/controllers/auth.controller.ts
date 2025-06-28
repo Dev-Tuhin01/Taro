@@ -19,6 +19,11 @@ export const register = async (req:Request, res:Response) => {
     const hashedPassword = await bcrypt.hash(password,10);
     let parentId = null;
 
+    if ( role === "child" && !parentCode ) {
+      res.status(400).json({
+        error: "Children Need Parent to be born"
+      });
+    }
     if ( role === "child" && parentCode ) {
       const parent = await User.findOne({
         userName: parentCode ,
@@ -30,7 +35,7 @@ export const register = async (req:Request, res:Response) => {
       }
 
       parentId = parent?._id;
-    }
+    } 
 
     const user = new User({
       userName,
@@ -60,9 +65,9 @@ export const register = async (req:Request, res:Response) => {
 
 export const login = async (req:Request, res:Response) => {
   try {
-    const {userName, password} = req.body;
+    const {userName, password, role} = req.body;
     
-    const user = await User.findOne({userName});
+    const user = await User.findOne({userName,role});
 
     if(!user) {
       res.status(401).json({

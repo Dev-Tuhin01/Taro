@@ -16,15 +16,15 @@ const router = createBrowserRouter([
       {index: true, element: <Auth /> },
       {path: "child", element: <AuthForm userType="child" />,
         children:[
-          {index:true, element:<Login /> },
-          {path:"login", element:<Login />},
+          {index:true, element:<Login role="child" /> },
+          {path:"login", element:<Login role="child" />},
           {path:"register", element:<Register role="child"/>},
         ]
        },
       {path: "parent", element: <AuthForm userType="parent" />,
          children:[
-          {index:true,element:<Login />},
-          {path:"login", element:<Login />},
+          {index:true,element:<Login role="parent" />},
+          {path:"login", element:<Login role="parent" />},
           {path:"register",element:<Register role="parent" />},
         ]
        },

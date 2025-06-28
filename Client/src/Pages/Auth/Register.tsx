@@ -1,6 +1,10 @@
 import { useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../Stores/AuthStore";
+import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
-const Register = ({role}:{role:string}) => {
+const Register = ({role}:{role:"child" | "parent"}) => {
   const [data,setData] = useState({
     userName:"",
     password:"",
@@ -8,7 +12,44 @@ const Register = ({role}:{role:string}) => {
     parentCode:""
   });
 
-  const [cPassWord,setCPassword] = useState("")
+  const {isLoading, register} = useAuthStore();
+  const navigate = useNavigate();
+
+  const [cPassWord,setCPassword] = useState("");
+
+  const formVerification = () =>{
+    if (!data.userName) {
+      toast.error("Please Enter Username");
+      return false;
+    }
+
+    if (!data.password) {
+      toast.error("Please Enter Password");
+      return false;
+    }
+
+    if (!cPassWord) {
+      toast.error("Please Enter Confirm Password");
+      return false;
+    }
+
+    if (role === "child" && !data.parentCode ) {
+      toast.error("Children must enter userName");
+      return false;
+    }
+
+    if (data.password.length <= 6) {
+      toast.error("Password must be atleast 6 charecter long");
+      return false;
+    }
+
+    if (data.password !== cPassWord) {
+      toast.error("Password does not match the confirm password");
+      return false;
+    }
+
+    return true;
+  }
 
   const onReset =() =>{
     setData({...data,
@@ -20,9 +61,21 @@ const Register = ({role}:{role:string}) => {
   }
 
 
-  const onSubmit = (e:FormEvent) =>{
+  const onSubmit = async (e:FormEvent) =>{
       e.preventDefault();
-      console.log(data);
+
+    if (!formVerification()) {
+      return ;
+    }
+
+    const success = await register(data);
+
+    if (success) {
+      navigate(role==="child"?"/child":"/parent");
+    } else{
+      onReset()
+    }
+    
     }
 
   return (
@@ -53,8 +106,16 @@ const Register = ({role}:{role:string}) => {
       }
 
       <div className="flex justify-around mt-12">
-        <button type="submit" className="min-w-1/3 min-h-12 bg-UI-8 font-extrabold text-2xl rounded-full cursor-pointer">Submit</button>
-        <button type="reset" onClick={onReset} className="min-w-1/3 min-h-12 bg-UI-3 rounded-full text-2xl cursor-pointer">Reset</button>
+        <button type="submit" 
+        className="min-w-1/3 min-h-12 bg-UI-8 font-extrabold text-2xl rounded-full cursor-pointer" 
+        disabled={ isLoading || !data.userName.trim() || !data.password.trim() }>
+          {isLoading ? <Loader2 className="aspect-square w-5 animate-spin" /> : "Submit"}
+        </button>
+        <button type="reset" onClick={onReset}
+        disabled={  isLoading || !data.userName.trim() || !data.password.trim() }
+         className="min-w-1/3 min-h-12 bg-UI-3 rounded-full text-2xl cursor-pointer">
+          {isLoading ? <Loader2 className="aspect-square w-5 animate-spin" /> : "Reset"}
+        </button>
       </div>
     </form>
   )
