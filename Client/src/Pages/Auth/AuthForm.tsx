@@ -2,10 +2,8 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { NavLink, Outlet } from "react-router-dom";
 
-const AuthForm = ({ userType }: { userType: string }) => {
-  useEffect(() => {
-    toast(userType);
-  }, [userType]);
+const AuthForm = () => {
+  
 
   return (
     <div className="bg-UI-3 w-full h-full flex justify-center items-center relative">

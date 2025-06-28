@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Auth from "../Pages/Auth/Auth";
 import Game from "../Pages/Child/Game";
 import Todo from "../Pages/Todo";
@@ -9,19 +9,26 @@ import Parent from "../Pages/Parent/Parent";
 import AuthForm from "../Pages/Auth/AuthForm";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
+import AUthRedirect from "../Components/AuthRedirect";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 const router = createBrowserRouter([
   { path: "/auth",
+    element:(
+      <AUthRedirect><Outlet /></AUthRedirect>
+    ),
     children: [
-      {index: true, element: <Auth /> },
-      {path: "child", element: <AuthForm userType="child" />,
+      {index: true, element: (
+      <Auth />
+    ) },
+      {path: "child", element: <AuthForm />,
         children:[
           {index:true, element:<Login role="child" /> },
           {path:"login", element:<Login role="child" />},
           {path:"register", element:<Register role="child"/>},
         ]
        },
-      {path: "parent", element: <AuthForm userType="parent" />,
+      {path: "parent", element: <AuthForm />,
          children:[
           {index:true,element:<Login role="parent" />},
           {path:"login", element:<Login role="parent" />},
@@ -32,7 +39,11 @@ const router = createBrowserRouter([
    },
   {
     path: "/child",
-    element: <Child />,
+    element:(
+      <ProtectedRoute requiredRole="child" >
+        <Child />,
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Game /> },
       { path: "game", element: <Game /> },
@@ -41,7 +52,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/parent",
-    element: <Parent />,
+    element: (
+      <ProtectedRoute requiredRole="parent">
+        <Parent />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Children /> },
       { path: "children", element: <Children /> },
