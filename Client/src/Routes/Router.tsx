@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 import Auth from "../Pages/Auth/Auth";
 import Game from "../Pages/Child/Game";
 import Todo from "../Pages/Todo";
@@ -12,8 +12,22 @@ import Register from "../Pages/Auth/Register";
 import AUthRedirect from "../Components/AuthRedirect";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import ChoreDetails from "../Components/ChoreDetails";
+import { useAuthStore } from "../Stores/AuthStore";
+
+const RootRedirect = () => {
+  const { isAuthenticated, user } = useAuthStore();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  const dashboardPath = user?.role === 'parent' ? '/parent' : '/child';
+  return <Navigate to={dashboardPath} replace />;
+};
+
 
 const router = createBrowserRouter([
+  {path:"/", element:<RootRedirect />},
   { path: "/auth",
     element:(
       <AUthRedirect><Outlet /></AUthRedirect>
