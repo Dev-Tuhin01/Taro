@@ -59,8 +59,9 @@ export const getMyPet = async (req:AuthReq, res:express.Response) => {
   const pet = await Pet.findOne({ ownerId : req.user._id});
 
   if (!pet) {
-    res.status(404).json({
-      error: "No Taro found for you"
+    res.status(200).json({
+      error: "No Taro found for you",
+      data: false
     });
     return ;
   }
@@ -68,7 +69,10 @@ export const getMyPet = async (req:AuthReq, res:express.Response) => {
   updatePetStat(pet);
   await pet.save();
 
-  res.status(200).json(pet);
+  res.status(200).json({
+    pet,
+    data:true
+  });
 
   } catch (error) {
     res.status(500).json({

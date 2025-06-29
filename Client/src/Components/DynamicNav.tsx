@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-type NavItem = {
+interface NavItem {
   link: string;
   title: string;
 };

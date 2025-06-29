@@ -35,6 +35,9 @@ api.interceptors.response.use(
       setTimeout(() =>{
         window.location.href ="/auth";
       }, 5000);
+    } else {
+      console.error("Server Error: ",error.respone.data);
+      toast.error(`Server said: ${error.response?.data.error}`);
     }
     return Promise.reject(error);
   }

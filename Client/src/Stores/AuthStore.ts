@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import api from "../API/axiosAPI"; 
+import api from "../API/axiosAPI";
 import toast from "react-hot-toast";
+
+// User interface
 export interface User {
   _id: string;
   userName: string;
@@ -12,6 +14,7 @@ export interface User {
   _v: unknown;
 }
 
+// Store state
 export interface AuthState {
   user: User | null;
   token: string | null;
@@ -19,82 +22,95 @@ export interface AuthState {
   isLoading: boolean;
 }
 
+// Actions
 export interface AuthAction {
   login: (credential: LoginCredential) => Promise<boolean>;
   register: (data: RegisterData) => Promise<boolean>;
   logout: () => void;
-  setLoading: (loading:boolean) => void;
+  setLoading: (loading: boolean) => void;
+  updateUserLocally: (updatedData: Partial<User>) => void;
 }
 
+// Login input
 export interface LoginCredential {
   userName: string;
   password: string;
 }
 
+// Register input
 export interface RegisterData {
   userName: string;
   password: string;
   role: "child" | "parent";
-  parentCode ?:string;
+  parentCode?: string;
 }
 
+// Zustand store
 export const useAuthStore = create<AuthState & AuthAction>()(
   persist(
-    (set,_get) => ({
-      user:null,
-      token:null,
-      isAuthenticated:false,
-      isLoading:false,
+    (set, _get) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
 
-      setLoading: (loading:boolean) => set({isLoading:loading}),
+      setLoading: (loading: boolean) => set({ isLoading: loading }),
 
-      login: async (Credential:LoginCredential) => {
+      login: async (credential: LoginCredential) => {
         try {
-          set( { isLoading:true});
+          set({ isLoading: true });
 
-          const response = await api.post("/auth/login",Credential);
+          const response = await api.post("/auth/login", credential);
           const { user, token } = response.data;
-          
+
+          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
           set({
             user,
             token,
             isAuthenticated: true,
-            isLoading: false
-          })
+            isLoading: false,
+          });
 
-
-
-          toast.success(`welcome back, ${user.userName}`);
+          toast.success(`Welcome back, ${user.userName}`);
           return true;
-        } catch (error:any) {
-          set({ isLoading:false });
+        } catch (error: any) {
+          set({ isLoading: false });
 
-          const errorMessage = error.response?.data?.error || "Login Failed";
+          const errorMessage =
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Login failed";
           toast.error(errorMessage);
           return false;
         }
       },
 
-      register: async (userData:RegisterData) => {
+      register: async (userData: RegisterData) => {
         try {
-          set({ isLoading: true});
+          set({ isLoading: true });
 
-          const response = await api.post("/auth/register",userData);
-          const { user, token} = response.data;
+          const response = await api.post("/auth/register", userData);
+          const { user, token } = response.data;
+
+          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
           set({
             user,
             token,
             isAuthenticated: true,
-            isLoading: true
-          })
+            isLoading: false,
+          });
 
-          toast.success(`welcome back, ${user.userName}`);
+          toast.success(`Welcome, ${user.userName}`);
           return true;
-        } catch (error:any) {
-          set({ isLoading:false });
+        } catch (error: any) {
+          set({ isLoading: false });
 
-          const errorMessage = error.response?.data?.error || "Login Failed";
+          const errorMessage =
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Registration failed";
           toast.error(errorMessage);
           return false;
         }
@@ -107,18 +123,34 @@ export const useAuthStore = create<AuthState & AuthAction>()(
           isAuthenticated: false,
           isLoading: false,
         });
-        
-        toast.success('Logged out successfully');
-      }, 
-      
+
+        delete api.defaults.headers.common["Authorization"];
+
+        toast.success("Logged out successfully");
+      },
+
+      updateUserLocally: (updatedData: Partial<User>) => {
+        set((state) => {
+          if (!state.user) return state;
+
+          return {
+            user: {
+              ...state.user,
+              ...updatedData,
+            },
+          };
+        });
+
+        toast.success("User updated locally");
+      },
     }),
     {
-        name: "auth-storage",
-        partialize: (state) =>({
-          user: state.user,
-          token: state.token,
-          isAuthenticated: state.isAuthenticated
-        }),
-      }
+      name: "auth-storage",
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+      }),
+    }
   )
-)
+);

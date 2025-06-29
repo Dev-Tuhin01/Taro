@@ -34,7 +34,7 @@ const TodoItem = ({item}:{item:TodoItemProps}) =>{
   }
 
   return (
-    <div className={`w-full rounded-2xl ${item.status === "completed"?"bg-UI-9":(item.status === "approved"?"bg-UI-10":"bg-UI-6")}   border border-Accent-Primary hover:border-4 p-2 mb-2`}>
+    <div className={`w-full rounded-2xl ${item.status === "completed"?"bg-UI-7":(item.status === "approved"?"bg-UI-10":"bg-UI-6")} border border-Accent-Primary hover:border-4 p-2 mb-2`}>
       <div className="border-b border-b-Accent-Primary">
         <div className="flex w-full">
           <div className="text-4xl text-BG-Dark">{item.title} </div>

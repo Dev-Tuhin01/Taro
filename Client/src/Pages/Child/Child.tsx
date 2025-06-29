@@ -6,7 +6,7 @@ const Child = () =>{
   const navItems = [
     {
       link: "game",
-      title: "Game"
+      title:"Game"
     }, {
       link:"chore",
       title: "Chores"
