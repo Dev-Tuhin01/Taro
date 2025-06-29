@@ -160,13 +160,14 @@ export const exercisePet = async (req:AuthReq, res:express.Response) => {
 
     updatePetStat(pet);
 
-    if (pet.stamina < 30 ) {
+    if (pet.stamina < 30  || pet.state === "exhausted") {
       res.status(400).json({
-        error: " Taro is too tire to excersize"
+        error: " Taro is too tired to excersize"
       }); 
     }
 
     pet.stamina -= 30;
+    pet.hunger -=10; 
     pet.lastExercised = Date.now();
     pet.filth += 5;
 

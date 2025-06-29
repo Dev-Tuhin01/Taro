@@ -141,7 +141,6 @@ export const useAuthStore = create<AuthState & AuthAction>()(
           };
         });
 
-        toast.success("User updated locally");
       },
     }),
     {
