@@ -1,44 +1,36 @@
 // In Server/src/app.ts
-
 import express, { type Request, type Response } from "express";
 import cors from "cors";
-import path from "path"; // Import the 'path' module
-import authRouter from "./routes/auth.route.ts";
-import petRoutes from "./routes/pet.routes.ts";
-import choreRoute from "./routes/chore.route.ts";
-import miscRouter from "./routes/misc.route.ts";
+import path from "path"; // <-- Make sure to import path
+import authRouter from "./routes/auth.route.js";
+import petRoutes from "./routes/pet.routes.js";
+import choreRoute from "./routes/chore.route.js";
+import miscRouter from "./routes/misc.route.js";
 
 const app = express();
 
-app.use(cors({
-  // Replace with your actual Vercel deployment URL in production
-  origin: ["http://localhost:5173", "https://taro-rho.vercel.app"]
-}));
+app.use(cors());
 app.use(express.json());
 
-// API routes
+// Your API routes
 app.use("/api/auth", authRouter);
 app.use("/api/pet", petRoutes);
 app.use("/api/chore", choreRoute);
 app.use("/api/misc/", miscRouter);
 
-// Serve frontend
-if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
-  // Serve static files from the React app build directory
-  app.use(express.static(path.join(__dirname, '/Client/dist')));
+// --- Static File Serving and Catch-All Route ---
+// This section is the fix
+const __dirname = path.resolve();
+const clientDistPath = path.join(__dirname, 'Client', 'dist');
 
-  // The "catchall" handler: for any request that doesn't match one above,
-  // send back React's index.html file.
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'Client', 'dist', 'index.html'))
-  );
-} else {
-  app.get("/", (req: Request, res: Response) => {
-    res.status(200).json({
-      message: "API is running..."
-    });
-  });
-}
+// Serve static files from the React app
+app.use(express.static(clientDistPath));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
+});
+// --- End of Fix ---
 
 export default app;
