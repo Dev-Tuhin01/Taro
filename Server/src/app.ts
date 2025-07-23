@@ -19,6 +19,7 @@ app.use("/api/chore",choreRoute);
 app.use("/api/misc/",miscRouter);
 
 app.get("/",(req:Request,res:Response)=>{
+  console.log("working");  
   res.status(200).json({
     message:"All working correctly"
   })

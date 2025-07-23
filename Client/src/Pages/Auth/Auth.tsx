@@ -19,7 +19,7 @@ const Auth = () => {
     healthCheck();
   });
   return (
-    <div className="h-full bg-UI-1 flex justify-center items-center">
+    <div className="h-full bg-UI-3 flex justify-center items-center">
       <div className="text-6xl text-UI-10 text-center">
         Hello There! So Tell us, who are you?
         <div className="flex justify-around mt-12 w max-w-4xl gap-10">
@@ -50,7 +50,7 @@ const Auth = () => {
           >
             <NavLink
               to="parent"
-              className="bg-UI-9 w-full h-full block py-4 hover:animate-pulse text-center text-3xl text-white font-semibold"
+              className="bg-UI-9/80 w-full h-full block py-4 hover:animate-pulse text-center text-3xl text-white font-semibold"
               style={{
                 clipPath: "polygon(0% 0%, 75% 0%, 99% 100%, 0% 100%)",
               }}

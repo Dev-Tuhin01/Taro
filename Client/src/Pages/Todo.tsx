@@ -41,7 +41,7 @@ const Todo = () => {
       ) : todo.length === 0 ? (
       <div>No Chores found</div>
       ) : (
-      <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">  
+      <div className="flex-1 overflow-y-auto  pr-1">  
         {todo.map((item:TodoItemProps) => (
           <Link to={item._id} key={item._id}>
             <TodoItem item={item} />
