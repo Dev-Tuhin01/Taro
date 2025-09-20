@@ -16,21 +16,21 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/pet", petRoutes);
 app.use("/api/chore", choreRoute);
-app.use("/api/misc/", miscRouter);
+app.use("/api/misc", miscRouter);
 
-// --- Static File Serving and Catch-All Route ---
-// This section is the fix
-const __dirname = path.resolve();
-const clientDistPath = path.join(__dirname, 'Client', 'dist');
+// // --- Static File Serving and Catch-All Route ---
+// // This section is the fix
+// const __dirname = path.resolve();
+// const clientDistPath = path.join(__dirname, 'Client', 'dist');
 
-// Serve static files from the React app
-app.use(express.static(clientDistPath));
+// // Serve static files from the React app
+// app.use(express.static(clientDistPath));
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(clientDistPath, 'index.html'));
-});
-// --- End of Fix ---
+// // The "catchall" handler: for any request that doesn't
+// // match one above, send back React's index.html file.
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(clientDistPath, 'index.html'));
+// });
+// // --- End of Fix ---
 
 export default app;

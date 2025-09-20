@@ -1,9 +1,8 @@
 import express from "express"
-import User from "../models/user.model.ts";
-import type {AuthReq} from "../middlewares/auth.middleware.ts"
-import Chore, { type ChoreDocument } from "../models/chore.model.ts"
+import User from "../models/user.model.js";
+import type {AuthReq} from "../middlewares/auth.middleware.js"
+import Chore, { type ChoreDocument } from "../models/chore.model.js"
 import mongoose from "mongoose";
-import { error } from "console";
 
 interface queryInterface extends mongoose.Document {
   parentId ?: mongoose.Types.ObjectId;

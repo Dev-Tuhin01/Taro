@@ -1,7 +1,7 @@
 import express from "express";
-import type { AuthReq } from "../middlewares/auth.middleware.ts";
-import Pet from "../models/pet.model.ts";
-import updatePetStat from "../utils/updatePetStats.ts";
+import type { AuthReq } from "../middlewares/auth.middleware.js";
+import Pet from "../models/pet.model.js";
+import updatePetStat from "../utils/updatePetStats.js";
 
 export const createPet = async (req:AuthReq, res: express.Response) => {
   try {

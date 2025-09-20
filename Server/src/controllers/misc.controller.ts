@@ -1,6 +1,6 @@
 import type { AuthReq } from "../middlewares/auth.middleware.ts";
 import express from "express";
-import User from "../models/user.model.ts";
+import User from "../models/user.model.js";
 
 export const getChildren = async (req:AuthReq, res:express.Response) => {
   try {

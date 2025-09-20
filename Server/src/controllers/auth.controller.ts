@@ -1,7 +1,7 @@
 import type {Request ,Response } from "express";
 import bcrypt from "bcrypt";
-import User from "../models/user.model.ts";
-import { generateJWTToken } from "../utils/jwt.ts";
+import User from "../models/user.model.js";
+import { generateJWTToken } from "../utils/jwt.js";
 
 export const register = async (req:Request, res:Response) => {
   try {

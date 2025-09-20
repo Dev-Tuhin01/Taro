@@ -1,6 +1,6 @@
 import express from "express";
-import { createPet, feedPet, getMyPet,exercisePet, cleanPet, sleepPet } from "../controllers/pet.controller.ts";
-import { authMiddleWare } from "../middlewares/auth.middleware.ts";
+import { createPet, feedPet, getMyPet,exercisePet, cleanPet, sleepPet } from "../controllers/pet.controller.js";
+import { authMiddleWare } from "../middlewares/auth.middleware.js";
 
 const petRoutes = express.Router();
 

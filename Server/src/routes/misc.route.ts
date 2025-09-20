@@ -1,6 +1,6 @@
 import express from "express";
-import { authMiddleWare } from "../middlewares/auth.middleware.ts";
-import { buyFood, getChildren } from "../controllers/misc.controller.ts";
+import { authMiddleWare } from "../middlewares/auth.middleware.js";
+import { buyFood, getChildren } from "../controllers/misc.controller.js";
 
 const miscRouter = express.Router();
 

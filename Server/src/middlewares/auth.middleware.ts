@@ -1,6 +1,6 @@
 import express from "express";
 import Jwt from "jsonwebtoken";
-import User,  {type UserDocument } from "../models/user.model.ts";
+import User,  {type UserDocument } from "../models/user.model.js";
 
 export interface AuthReq extends express.Request {
   user?: UserDocument;

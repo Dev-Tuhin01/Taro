@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
+import path from "path";
 
-import app from "./app.ts";
-import connectDB from "./config/db.ts";
+import app from "./app.js";
+import connectDB from "./config/db.js";
 
 dotenv.config();
 

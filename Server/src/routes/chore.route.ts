@@ -1,6 +1,6 @@
 import express from "express";
-import { authMiddleWare } from "../middlewares/auth.middleware.ts";
-import { choreApprove, choreComplete, getChorelist, getChore, postChores } from "../controllers/chore.controller.ts";
+import { authMiddleWare } from "../middlewares/auth.middleware.js";
+import { choreApprove, choreComplete, getChorelist, getChore, postChores } from "../controllers/chore.controller.js";
 
 const choreRoute = express.Router();
 
